@@ -1,10 +1,9 @@
-# -*- encoding : utf-8 -*-
 require_relative "../boot"
 
-# Create Payment Request.
+# Create Split Payment.
 #
-# You need to set your PagSeguro::ApplicationCredentials (APP_ID, APP_KEY) in
-# the application config.
+# You need to set your ApplicationCredentials (EMAIL, TOKEN) in the application
+# config.
 #
 # P.S: See the boot file example for more details.
 
@@ -13,25 +12,42 @@ payment.abandon_url = "http://example.com/?abandoned"
 payment.notification_url = "http://example.com/?notification"
 payment.redirect_url = "http://example.com/?redirect"
 
-# if you don't want use the application config, can give your credentials object to payment request
-#
-payment.credentials = PagSeguro::AccountCredentials.new('bbbbbbbbbb@gmail.com', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+# If you don't want to use the application config, can give your credentials
+# object to payment request.
+
+payment.credentials = PagSeguro::ApplicationCredentials.new(
+  'xxxxxxxxxxxxx',
+  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+)
 
 payment.items << {
   id: 1234,
   description: %[Televisão 19" Sony],
+  quantity: 1,
   amount: 459.50,
   weight: 0
 }
 
-payment.reference = "REF1235"
+payment.receivers = [
+  {
+    email: 'aaaaaaaaaaaaaaaaaaaaa@sandbox.pagseguro.com.br',
+    split: { amount: '400.00', },
+  },
+  {
+    email: 'bbbbbbbbbb@gmail.com',
+    split: { amount: '59.50', },
+  }
+]
+
+payment.reference = "REF1234"
 payment.sender = {
   name: "John Galt",
   email: "bbbbbbbbbb@gmail.com",
-  cpf: "99999999999",
+  cpf: "21639716866",
   phone: {
-    area_code: 86,
-    number: "888888888"
+    area_code: 11,
+    number: "12345678"
   }
 }
 
